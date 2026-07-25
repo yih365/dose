@@ -15,6 +15,7 @@
 - [ ] Read resting heart rate from Health Connect
 - [ ] Read sleep session data from Health Connect
 - [ ] Feed real heart rate + sleep into the Compare screen charts
+- [ ] Write each logged caffeine entry back to Health Connect as a NutritionRecord (so other health apps can see it)
 
 ## Logging
 - [x] Allow user to input a custom time when logging caffeine
