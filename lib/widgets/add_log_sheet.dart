@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../models.dart';
 import '../theme.dart';
 
@@ -13,6 +14,41 @@ class AddLogSheet extends StatefulWidget {
 class _AddLogSheetState extends State<AddLogSheet> {
   DrinkType? _selected;
   int _customMg = 75;
+  late DateTime _selectedTime;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedTime = DateTime.now();
+  }
+
+  Future<void> _pickTime() async {
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(_selectedTime),
+      builder: (context, child) => Theme(
+        data: Theme.of(context).copyWith(
+          colorScheme: Theme.of(context).colorScheme.copyWith(
+            primary: AppColors.accent,
+            onPrimary: Colors.white,
+            surface: AppColors.neutral100,
+          ),
+        ),
+        child: child!,
+      ),
+    );
+    if (picked != null) {
+      setState(() {
+        _selectedTime = DateTime(
+          _selectedTime.year,
+          _selectedTime.month,
+          _selectedTime.day,
+          picked.hour,
+          picked.minute,
+        );
+      });
+    }
+  }
 
   static const _presets = [
     DrinkType.espresso,
@@ -44,7 +80,38 @@ class _AddLogSheetState extends State<AddLogSheet> {
             ),
           ),
           const SizedBox(height: 20),
-          Text('Log caffeine', style: headingStyle(24)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text('Log caffeine', style: headingStyle(24)),
+              GestureDetector(
+                onTap: _pickTime,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+                  decoration: BoxDecoration(
+                    color: AppColors.neutral200,
+                    borderRadius: BorderRadius.circular(999),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.access_time, size: 14, color: AppColors.accent700),
+                      const SizedBox(width: 5),
+                      Text(
+                        DateFormat('h:mm a').format(_selectedTime),
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.accent700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
           const SizedBox(height: 18),
           GridView.count(
             crossAxisCount: 2,
@@ -186,7 +253,7 @@ class _AddLogSheetState extends State<AddLogSheet> {
                       widget.onAdd(CaffeineEntry(
                         type: _selected!,
                         mg: mg,
-                        time: DateTime.now(),
+                        time: _selectedTime,
                         source: 'Phone',
                       ));
                       Navigator.pop(context);

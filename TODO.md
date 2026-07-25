@@ -16,4 +16,7 @@
 - [ ] Read sleep session data from Health Connect
 - [ ] Feed real heart rate + sleep into the Compare screen charts
 
+## Logging
+- [x] Allow user to input a custom time when logging caffeine
+
 ## Bugs
