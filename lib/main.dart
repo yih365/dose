@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'config.dart';
 import 'models.dart';
 import 'theme.dart';
 import 'screens/log_screen.dart';
@@ -7,7 +9,9 @@ import 'screens/you_screen.dart';
 import 'widgets/add_log_sheet.dart';
 import 'services/watch_bridge.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Supabase.initialize(url: supabaseUrl, publishableKey: supabaseAnonKey);
   runApp(const DoseApp());
 }
 

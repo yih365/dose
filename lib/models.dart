@@ -35,12 +35,14 @@ extension DrinkTypeExt on DrinkType {
 }
 
 class CaffeineEntry {
+  final String? id; // null for local-only entries not yet persisted
   final DrinkType type;
   final int mg;
   final DateTime time;
   final String source;
 
   const CaffeineEntry({
+    this.id,
     required this.type,
     required this.mg,
     required this.time,
